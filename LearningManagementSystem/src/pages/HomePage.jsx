@@ -1,10 +1,31 @@
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import CourseCard from '../components/CourseCard.jsx';
+import * as courseService from '../services/courseService.js';
 
 function HomePage() {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await courseService.getCourses();
+        setCourses(res.data.slice(0, 3));
+      } catch {
+        // silently fail — featured section is non-critical
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
+
   return (
     <div className="page-wrap">
       <Container>
+        {/* Hero Section */}
         <Row className="align-items-center g-4 py-5">
           <Col lg={7}>
             <p className="eyebrow mb-3">Learning Management System</p>
@@ -24,18 +45,44 @@ function HomePage() {
               </Button>
             </div>
           </Col>
-          <Col lg={5}>
-            <Card className="feature-card border-0 shadow-lg">
-              <Card.Body className="p-4 p-md-5">
-                <h2 className="h4 fw-bold mb-3">Frontend stack ready</h2>
-                <ul className="feature-list mb-0">
-                  <li>Client-side routing with React Router</li>
-                  <li>API client with Axios</li>
-                  <li>Bootstrap + React Bootstrap styling</li>
-                  <li>Central layout for future dashboard pages</li>
-                </ul>
-              </Card.Body>
-            </Card>
+        </Row>
+
+        {/* Featured Courses Section */}
+        <Row className="py-4">
+          <Col>
+            <div className="section-heading mb-4">
+              <p className="eyebrow mb-2">Featured</p>
+              <h2 className="h3 fw-bold text-white mb-0">Popular courses</h2>
+            </div>
+
+            {loading ? (
+              <div className="text-center py-4">
+                <Spinner animation="border" variant="light" />
+                <p className="text-white-50 mt-3">Loading courses...</p>
+              </div>
+            ) : courses.length > 0 ? (
+              <>
+                <Row className="g-4">
+                  {courses.map((course) => (
+                    <Col key={course._id} md={4}>
+                      <CourseCard course={course} />
+                    </Col>
+                  ))}
+                </Row>
+                <div className="text-center mt-4">
+                  <Button as={Link} to="/courses" variant="outline-light">
+                    Browse All Courses
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-4">
+                <p className="text-white-50">No courses available yet.</p>
+                <Button as={Link} to="/courses" variant="outline-light">
+                  Browse All Courses
+                </Button>
+              </div>
+            )}
           </Col>
         </Row>
       </Container>
