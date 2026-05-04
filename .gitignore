@@ -1,0 +1,18 @@
+# Kiro spec files
+.kiro/
+
+# Environment variables
+LMSBackend/.env
+LearningManagementSystem/.env
+
+# Node modules
+node_modules/
+LMSBackend/node_modules/
+LearningManagementSystem/node_modules/
+
+# Build output
+LearningManagementSystem/dist/
+
+# Logs
+*.log
+npm-debug.log*
