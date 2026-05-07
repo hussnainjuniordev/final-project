@@ -1,78 +1,45 @@
-import { useEffect, useState } from 'react';
-import { Alert, Button, Container, Form, Spinner } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
-import * as courseService from '../services/courseService.js';
+import { useState } from "react";
+import { Button, Container, Form, Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import * as courseService from "../../services/courseService.js";
 
-function EditCoursePage() {
-  const { id } = useParams();
+function CreateCoursePage() {
   const navigate = useNavigate();
-
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
   const [price, setPrice] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const fetchCourse = async () => {
-      setLoading(true);
-      setError('');
-      try {
-        const res = await courseService.getCourseById(id);
-        const course = res.data;
-        setTitle(course.title || '');
-        setDescription(course.description || '');
-        setCategory(course.category || '');
-        setPrice(course.price ?? 0);
-      } catch {
-        setError('Failed to load course details.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCourse();
-  }, [id]);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSaving(true);
-    setError('');
+    setLoading(true);
     try {
-      await courseService.updateCourse(id, {
+      await courseService.createCourse({
         title,
         description,
         category,
         price: Number(price),
       });
-      navigate('/dashboard/instructor/courses');
+      toast.success("Course created successfully!");
+      navigate("/dashboard/instructor/courses");
     } catch (err) {
-      setError(
-        err.response?.data?.message || 'Failed to update course. Please try again.'
+      toast.error(
+        err.response?.data?.message ||
+          "Failed to create course. Please try again.",
       );
     } finally {
-      setSaving(false);
+      setLoading(false);
     }
   };
 
-  if (loading) {
-    return (
-      <Container className="page-section py-5 text-center">
-        <Spinner animation="border" variant="light" />
-        <p className="text-white-50 mt-3">Loading course...</p>
-      </Container>
-    );
-  }
-
   return (
-    <Container className="page-section py-5" style={{ maxWidth: '640px' }}>
+    <Container className="page-section py-5" style={{ maxWidth: "640px" }}>
       <div className="section-heading mb-4">
         <p className="eyebrow mb-1">Instructor</p>
-        <h1 className="h2 fw-bold text-white mb-0">Edit Course</h1>
+        <h1 className="h2 fw-bold text-white mb-0">Create New Course</h1>
       </div>
-
-      {error && <Alert variant="danger">{error}</Alert>}
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="courseTitle">
@@ -120,14 +87,14 @@ function EditCoursePage() {
           />
         </Form.Group>
 
-        <Button type="submit" variant="light" disabled={saving}>
-          {saving ? (
+        <Button type="submit" variant="light" disabled={loading}>
+          {loading ? (
             <>
               <Spinner animation="border" size="sm" className="me-2" />
-              Saving...
+              Creating...
             </>
           ) : (
-            'Save Changes'
+            "Create Course"
           )}
         </Button>
       </Form>
@@ -135,4 +102,4 @@ function EditCoursePage() {
   );
 }
 
-export default EditCoursePage;
+export default CreateCoursePage;

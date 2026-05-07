@@ -1,25 +1,24 @@
-import { useEffect, useState } from 'react';
-import { Alert, Col, Container, Row, Spinner } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import CourseCard from '../components/CourseCard.jsx';
-import * as enrollmentService from '../services/enrollmentService.js';
+import { useEffect, useState } from "react";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import CourseCard from "../../components/CourseCard.jsx";
+import * as enrollmentService from "../../services/enrollmentService.js";
 
 function MyCoursesPage() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchMyCourses = async () => {
       setLoading(true);
-      setError('');
       try {
         const res = await enrollmentService.getMyCourses();
         // Each enrollment may have a nested course object
         const courseList = res.data.map((e) => e.course || e);
         setCourses(courseList);
-      } catch {
-        setError('Failed to load your courses. Please try again.');
+      } catch (err) {
+        toast.error("Failed to load your courses. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -34,8 +33,6 @@ function MyCoursesPage() {
         <h1 className="h2 fw-bold text-white mb-0">My Courses</h1>
       </div>
 
-      {error && <Alert variant="danger">{error}</Alert>}
-
       {loading ? (
         <div className="text-center py-5">
           <Spinner animation="border" variant="light" />
@@ -44,7 +41,8 @@ function MyCoursesPage() {
       ) : courses.length === 0 ? (
         <div className="text-center py-5">
           <p className="text-white-50 mb-3">
-            You haven&apos;t enrolled in any courses yet. Browse courses to get started.
+            You haven&apos;t enrolled in any courses yet. Browse courses to get
+            started.
           </p>
           <Link to="/courses" className="btn btn-light">
             Browse Courses

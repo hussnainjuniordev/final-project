@@ -3,28 +3,33 @@ import MainLayout from '../layouts/MainLayout.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 
 // Public pages
-import HomePage from '../pages/HomePage.jsx';
-import CoursesPage from '../pages/CoursesPage.jsx';
-import CourseDetailPage from '../pages/CourseDetailPage.jsx';
-import LoginPage from '../pages/LoginPage.jsx';
-import RegisterPage from '../pages/RegisterPage.jsx';
-import NotFoundPage from '../pages/NotFoundPage.jsx';
-import AboutPage from '../pages/AboutPage.jsx';
+import HomePage from '../pages/public/HomePage.jsx';
+import CoursesPage from '../pages/public/CoursesPage.jsx';
+import CourseDetailPage from '../pages/public/CourseDetailPage.jsx';
+import AboutPage from '../pages/public/AboutPage.jsx';
+import NotFoundPage from '../pages/public/NotFoundPage.jsx';
+
+// Auth pages (common for all users)
+import LoginPage from '../pages/auth/LoginPage.jsx';
+import RegisterPage from '../pages/auth/RegisterPage.jsx';
 
 // Student pages
-import MyCoursesPage from '../pages/MyCoursesPage.jsx';
-import ProfilePage from '../pages/ProfilePage.jsx';
+import MyCoursesPage from '../pages/student/MyCoursesPage.jsx';
+
+// Shared pages (any authenticated user)
+import ProfilePage from '../pages/shared/ProfilePage.jsx';
 
 // Instructor pages
-import InstructorCoursesPage from '../pages/InstructorCoursesPage.jsx';
-import CreateCoursePage from '../pages/CreateCoursePage.jsx';
-import EditCoursePage from '../pages/EditCoursePage.jsx';
-import UploadLessonPage from '../pages/UploadLessonPage.jsx';
+import InstructorCoursesPage from '../pages/instructor/InstructorCoursesPage.jsx';
+import CreateCoursePage from '../pages/instructor/CreateCoursePage.jsx';
+import EditCoursePage from '../pages/instructor/EditCoursePage.jsx';
+import UploadLessonPage from '../pages/instructor/UploadLessonPage.jsx';
+import InstructorCourseLessonsPage from '../pages/instructor/InstructorCourseLessonsPage.jsx';
 
 // Admin pages
-import ManageUsersPage from '../pages/ManageUsersPage.jsx';
-import AdminCoursesPage from '../pages/AdminCoursesPage.jsx';
-import AnalyticsPage from '../pages/AnalyticsPage.jsx';
+import ManageUsersPage from '../pages/admin/ManageUsersPage.jsx';
+import AdminCoursesPage from '../pages/admin/AdminCoursesPage.jsx';
+import AnalyticsPage from '../pages/admin/AnalyticsPage.jsx';
 
 function AppRoutes() {
   return (
@@ -35,9 +40,13 @@ function AppRoutes() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/courses/:id" element={<CourseDetailPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
+
+        {/* Guest-only routes — redirect if already logged in */}
+        <Route element={<ProtectedRoute guestOnly />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
 
         {/* Student routes */}
         <Route element={<ProtectedRoute allowedRoles={['student']} />}>
@@ -54,6 +63,7 @@ function AppRoutes() {
           <Route path="/dashboard/instructor/courses" element={<InstructorCoursesPage />} />
           <Route path="/dashboard/instructor/courses/new" element={<CreateCoursePage />} />
           <Route path="/dashboard/instructor/courses/:id/edit" element={<EditCoursePage />} />
+          <Route path="/dashboard/instructor/courses/:id/lessons" element={<InstructorCourseLessonsPage />} />
           <Route path="/dashboard/instructor/lessons/upload" element={<UploadLessonPage />} />
         </Route>
 

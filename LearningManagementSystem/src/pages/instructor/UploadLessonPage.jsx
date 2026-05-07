@@ -1,18 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
-import { Alert, Button, Container, Form, Spinner } from 'react-bootstrap';
-import { useAuth } from '../context/AuthContext.jsx';
-import * as courseService from '../services/courseService.js';
-import * as lessonService from '../services/lessonService.js';
+import { useEffect, useRef, useState } from "react";
+import { Button, Container, Form, Spinner } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { useAuth } from "../../context/AuthContext.jsx";
+import * as courseService from "../../services/courseService.js";
+import * as lessonService from "../../services/lessonService.js";
 
 function UploadLessonPage() {
   const { user } = useAuth();
   const [courses, setCourses] = useState([]);
-  const [title, setTitle] = useState('');
-  const [courseId, setCourseId] = useState('');
+  const [title, setTitle] = useState("");
+  const [courseId, setCourseId] = useState("");
   const [videoFile, setVideoFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -20,41 +19,40 @@ function UploadLessonPage() {
       try {
         const res = await courseService.getCourses();
         const myCourses = res.data.filter(
-          (c) => c.instructor?._id === user?._id
+          (c) => c.instructor?._id === user?._id,
         );
         setCourses(myCourses);
         if (myCourses.length > 0) {
           setCourseId(myCourses[0]._id);
         }
-      } catch {
-        setError('Failed to load your courses.');
+      } catch (err) {
+        toast.error("Failed to load your courses.");
       }
     };
     fetchCourses();
-  }, []);
+  }, [user?._id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!videoFile) {
-      setError('Please select a video file.');
+      toast.error("Please select a video file.");
       return;
     }
     setUploading(true);
-    setError('');
-    setSuccess('');
     try {
       const formData = new FormData();
-      formData.append('title', title);
-      formData.append('courseId', courseId);
-      formData.append('video', videoFile);
+      formData.append("title", title);
+      formData.append("courseId", courseId);
+      formData.append("video", videoFile);
       await lessonService.createLesson(formData);
-      setSuccess('Lesson uploaded successfully!');
-      setTitle('');
+      toast.success("Lesson uploaded successfully!");
+      setTitle("");
       setVideoFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = '';
+      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err) {
-      setError(
-        err.response?.data?.message || 'Failed to upload lesson. Please try again.'
+      toast.error(
+        err.response?.data?.message ||
+          "Failed to upload lesson. Please try again.",
       );
     } finally {
       setUploading(false);
@@ -62,14 +60,11 @@ function UploadLessonPage() {
   };
 
   return (
-    <Container className="page-section py-5" style={{ maxWidth: '640px' }}>
+    <Container className="page-section py-5" style={{ maxWidth: "640px" }}>
       <div className="section-heading mb-4">
         <p className="eyebrow mb-1">Instructor</p>
         <h1 className="h2 fw-bold text-white mb-0">Upload Lesson</h1>
       </div>
-
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">{success}</Alert>}
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="lessonTitle">
@@ -119,7 +114,7 @@ function UploadLessonPage() {
               Uploading...
             </>
           ) : (
-            'Upload Lesson'
+            "Upload Lesson"
           )}
         </Button>
       </Form>

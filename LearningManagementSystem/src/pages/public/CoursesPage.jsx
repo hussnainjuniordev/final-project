@@ -1,34 +1,33 @@
-import { useEffect, useState } from 'react';
-import { Alert, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
-import CourseCard from '../components/CourseCard.jsx';
-import * as courseService from '../services/courseService.js';
-import * as enrollmentService from '../services/enrollmentService.js';
-import { useAuth } from '../context/AuthContext.jsx';
+import { useEffect, useState } from "react";
+import { Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { toast } from "react-toastify";
+import CourseCard from "../../components/CourseCard.jsx";
+import * as courseService from "../../services/courseService.js";
+import * as enrollmentService from "../../services/enrollmentService.js";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 function CoursesPage() {
   const { role } = useAuth();
   const [courses, setCourses] = useState([]);
   const [enrolledIds, setEnrolledIds] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
 
   const fetchCourses = async (params = {}) => {
     setLoading(true);
-    setError('');
     try {
       const res = await courseService.getCourses(params);
       setCourses(res.data);
-    } catch {
-      setError('Failed to load courses. Please try again.');
+    } catch (err) {
+      toast.error("Failed to load courses. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const fetchEnrolled = async () => {
-    if (role !== 'student') return;
+    if (role !== "student") return;
     try {
       const res = await enrollmentService.getMyCourses();
       const ids = res.data.map((e) => e.course?._id || e._id);
@@ -58,9 +57,12 @@ function CoursesPage() {
   const handleEnroll = async (courseId) => {
     try {
       await enrollmentService.enroll(courseId);
+      toast.success("Enrolled successfully!");
       setEnrolledIds((prev) => [...prev, courseId]);
-    } catch {
-      setError('Failed to enroll. Please try again.');
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || "Failed to enroll. Please try again.",
+      );
     }
   };
 
@@ -89,8 +91,6 @@ function CoursesPage() {
           />
         </Col>
       </Row>
-
-      {error && <Alert variant="danger">{error}</Alert>}
 
       {loading ? (
         <div className="text-center py-5">
