@@ -6,10 +6,10 @@ import CourseCard from "../../components/CourseCard.jsx";
 import * as courseService from "../../services/courseService.js";
 
 const stats = [
-  { icon: Users, label: "Students Enrolled", value: "1,200+" },
-  { icon: BookOpen, label: "Courses Available", value: "80+" },
-  { icon: GraduationCap, label: "Expert Instructors", value: "30+" },
-  { icon: Star, label: "Satisfaction Rate", value: "98%" },
+  { icon: Users, label: "Students Enrolled", value: "1,200+", grad: "linear-gradient(135deg,#6366f1,#8b5cf6)" },
+  { icon: BookOpen, label: "Courses Available", value: "80+", grad: "linear-gradient(135deg,#06b6d4,#10b981)" },
+  { icon: GraduationCap, label: "Expert Instructors", value: "30+", grad: "linear-gradient(135deg,#3b82f6,#6366f1)" },
+  { icon: Star, label: "Satisfaction Rate", value: "98%", grad: "linear-gradient(135deg,#f59e0b,#ef4444)" },
 ];
 
 function HomePage() {
@@ -35,9 +35,10 @@ function HomePage() {
       <Container>
         {/* ── Hero ── */}
         <div className="hero-section">
+          <div className="hero-grid" />
           <div style={{ position: "relative", zIndex: 1 }}>
             <div className="hero-badge">
-              <Rocket size={16} style={{ marginRight: "0.5rem" }} />
+              <Rocket size={14} />
               Full-Stack MERN Application
             </div>
             <h1>
@@ -50,7 +51,7 @@ function HomePage() {
             </p>
             <div className="d-flex gap-3 flex-wrap">
               <Button as={Link} to="/register" variant="light" size="lg">
-                Get Started Free
+                Get Started Free →
               </Button>
               <Button as={Link} to="/courses" variant="outline-light" size="lg">
                 Browse Courses
@@ -66,20 +67,21 @@ function HomePage() {
             return (
               <Col key={s.label} xs={6} md={3}>
                 <div className="stat-card">
-                  <div className="stat-icon">
-                    <IconComponent size={32} />
+                  <div className="stat-icon" style={{ background: s.grad }}>
+                    <IconComponent size={26} color="#fff" />
                   </div>
                   <div
                     className="fw-bold"
-                    style={{ fontSize: "1.4rem", color: "var(--brand)" }}
+                    style={{ fontSize: "1.6rem", color: "var(--text-1)", letterSpacing: "-0.5px" }}
                   >
                     {s.value}
                   </div>
                   <div
                     style={{
                       color: "var(--text-3)",
-                      fontSize: "0.8rem",
-                      marginTop: "0.15rem",
+                      fontSize: "0.78rem",
+                      marginTop: "0.2rem",
+                      fontWeight: 500,
                     }}
                   >
                     {s.label}
@@ -92,7 +94,7 @@ function HomePage() {
 
         {/* ── Featured Courses ── */}
         <div className="section-heading mb-4">
-          <p className="eyebrow mb-2">Featured</p>
+          <span className="eyebrow mb-2">Featured</span>
           <h2 className="h3 fw-bold mb-0" style={{ color: "var(--text-1)" }}>
             Popular Courses
           </h2>

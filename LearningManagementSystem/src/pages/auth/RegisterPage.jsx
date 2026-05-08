@@ -212,7 +212,7 @@ function RegisterPage() {
           }}
         >
           <div style={{ width: "100%", maxWidth: "440px" }}>
-            <p className="eyebrow mb-3">Get Started</p>
+            <span className="eyebrow mb-3">Get Started</span>
             <h1
               style={{
                 color: "var(--text-1)",
@@ -293,10 +293,10 @@ function RegisterPage() {
                         textAlign: "center",
                       }}
                     >
-                      <div
-                        style={{ fontSize: "1.4rem", marginBottom: "0.3rem" }}
+                    <div
+                        style={{ marginBottom: "0.4rem", display: "flex", justifyContent: "center" }}
                       >
-                        {r.icon}
+                        <r.icon size={22} style={{ color: role === r.value ? "#c4b5fd" : "var(--text-2)" }} />
                       </div>
                       <div
                         style={{

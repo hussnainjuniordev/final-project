@@ -73,8 +73,15 @@ function CourseDetailPage() {
           await checkEnrollment();
         } else if (role === "instructor" || role === "admin") {
           await fetchLessons();
+        } else {
+          // Unauthenticated — fetch lesson list for preview (titles only, no playback)
+          try {
+            const lessonRes = await lessonService.getLessons(id);
+            setLessons(lessonRes.data);
+          } catch {
+            // Backend may return 401 for unauthenticated — that's fine, show empty list
+          }
         }
-        // unauthenticated (role === null): show course info only, no lessons
       } catch (err) {
         console.error("Failed to load course details:", err);
         setError("Failed to load course details.");
@@ -635,36 +642,33 @@ function CourseDetailPage() {
 
           {/* Not enrolled CTA */}
           {role === "student" && !isEnrolled && (
-            <div
-              style={{
-                background: "var(--surface-1)",
-                border: "1px solid var(--border-1)",
-                borderRadius: "var(--radius)",
-                padding: "3rem",
-                textAlign: "center",
-                marginTop: "1rem",
-              }}
-            >
-              <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
-                <Lock size={32} style={{ margin: "0 auto" }} />
-              </div>
+            <div style={{ background: "var(--surface-1)", border: "1px solid var(--border-1)", borderRadius: "var(--radius)", padding: "3rem", textAlign: "center", marginTop: "1rem" }}>
+              <Lock size={32} style={{ margin: "0 auto 1rem", color: "var(--text-3)" }} />
               <p style={{ color: "var(--text-2)", marginBottom: "1.25rem" }}>
                 Enroll in this course to access all lessons.
               </p>
-              <Button
-                variant="light"
-                onClick={handleEnroll}
-                disabled={enrolling}
-              >
-                {enrolling ? (
-                  <>
-                    <Spinner animation="border" size="sm" className="me-2" />
-                    Enrolling...
-                  </>
-                ) : (
-                  `Enroll Now — ${course.price === 0 ? "Free" : `$${course.price}`}`
-                )}
+              <Button variant="light" onClick={handleEnroll} disabled={enrolling}>
+                {enrolling ? (<><Spinner animation="border" size="sm" className="me-2" />Enrolling...</>) : `Enroll Now — ${course.price === 0 ? "Free" : `$${course.price}`}`}
               </Button>
+            </div>
+          )}
+
+          {/* Unauthenticated CTA */}
+          {role === null && (
+            <div style={{ background: "var(--surface-1)", border: "1px solid var(--border-1)", borderRadius: "var(--radius)", padding: "3rem", textAlign: "center", marginTop: "1rem" }}>
+              <Lock size={32} style={{ margin: "0 auto 1rem", color: "var(--text-3)" }} />
+              <p style={{ color: "var(--text-2)", marginBottom: "0.5rem" }}>
+                Create a free account to enroll and watch all lessons.
+              </p>
+              {lessons.length > 0 && (
+                <p style={{ color: "var(--text-3)", fontSize: "0.85rem", marginBottom: "1.5rem" }}>
+                  {lessons.length} lesson{lessons.length !== 1 ? "s" : ""} available
+                </p>
+              )}
+              <div className="d-flex gap-3 justify-content-center flex-wrap">
+                <Button as="a" href="/register" variant="light">Get Started Free</Button>
+                <Button as="a" href="/login" variant="outline-light">Sign In</Button>
+              </div>
             </div>
           )}
         </>

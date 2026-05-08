@@ -399,7 +399,7 @@ function ManageUsersPage() {
       {/* Header */}
       <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div className="section-heading">
-          <p className="eyebrow mb-1">Admin Panel</p>
+          <span className="eyebrow mb-1">Admin Panel</span>
           <h1 className="h2 fw-bold mb-0" style={{ color: "var(--text-1)" }}>
             Manage Users
           </h1>

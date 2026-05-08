@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Inbox, Play, Trash2 } from "lucide-react";
+import { ArrowLeft, Inbox, Play, Trash2 } from "lucide-react";
 import VideoPlayer from "../../components/VideoPlayer.jsx";
 import * as courseService from "../../services/courseService.js";
 import * as lessonService from "../../services/lessonService.js";
@@ -198,7 +198,7 @@ function InstructorCourseLessonsPage() {
           setCourse(courseRes.data);
           setLessons(lessonsRes.data);
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) toast.error("Failed to load course data.");
       } finally {
         if (!cancelled) setLoading(false);
@@ -247,7 +247,7 @@ function InstructorCourseLessonsPage() {
         onMouseEnter={(e) => (e.currentTarget.style.color = "var(--brand)")}
         onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-2)")}
       >
-        ← Back to My Courses
+        <ArrowLeft size={16} /> Back to My Courses
       </button>
 
       {/* Course banner */}
@@ -325,7 +325,7 @@ function InstructorCourseLessonsPage() {
       {/* Lessons header */}
       <div className="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
         <div className="section-heading">
-          <p className="eyebrow mb-1">Course Content</p>
+          <span className="eyebrow mb-1">Course Content</span>
           <h2 className="h4 fw-bold mb-0" style={{ color: "var(--text-1)" }}>
             Uploaded Lessons
           </h2>

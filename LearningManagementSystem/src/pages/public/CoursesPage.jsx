@@ -69,7 +69,7 @@ function CoursesPage() {
   return (
     <Container className="page-section py-5">
       <div className="section-heading mb-4">
-        <p className="eyebrow mb-2">Courses</p>
+        <span className="eyebrow mb-2">Courses</span>
         <h1 className="h2 fw-bold text-white mb-0">Browse all courses</h1>
       </div>
 

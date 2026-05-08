@@ -54,7 +54,7 @@ function CourseCard({ course, onDelete }) {
         flexDirection: "column",
         height: "100%",
         transition: "border-color 0.2s, transform 0.2s",
-        cursor: "pointer",
+        // cursor: "pointer",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.borderColor = "var(--brand-border)";
@@ -64,9 +64,9 @@ function CourseCard({ course, onDelete }) {
         e.currentTarget.style.borderColor = "var(--border-1)";
         e.currentTarget.style.transform = "none";
       }}
-      onClick={() =>
-        navigate(`/dashboard/instructor/courses/${course._id}/lessons`)
-      }
+      // onClick={() =>
+      //   navigate(`/dashboard/instructor/courses/${course._id}/lessons`)
+      // }
     >
       {/* Top color bar */}
       <div
@@ -75,14 +75,14 @@ function CourseCard({ course, onDelete }) {
           background: "linear-gradient(90deg, var(--brand), #60a5fa)",
         }}
       />
-
+        {/*  instructor course card   */}
       <div
         style={{
           padding: "1.25rem",
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          gap: "0.75rem",
+          gap: "1rem",
         }}
       >
         {/* Category + Price */}
@@ -92,7 +92,7 @@ function CourseCard({ course, onDelete }) {
             style={{
               color: "var(--brand)",
               fontWeight: 700,
-              fontSize: "0.875rem",
+              fontSize: "0.rem",
             }}
           >
             {course.price === 0 ? "Free" : `$${course.price}`}
@@ -115,7 +115,7 @@ function CourseCard({ course, onDelete }) {
         <div
           style={{
             color: "var(--text-2)",
-            fontSize: "0.82rem",
+            fontSize: "1rem",
             lineHeight: 1.6,
             flex: 1,
           }}
@@ -216,7 +216,7 @@ function InstructorCoursesPage() {
       {/* Header */}
       <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div className="section-heading">
-          <p className="eyebrow mb-1">Instructor</p>
+          <span className="eyebrow mb-1">Instructor</span>
           <h1 className="h2 fw-bold mb-0" style={{ color: "var(--text-1)" }}>
             My Courses
           </h1>

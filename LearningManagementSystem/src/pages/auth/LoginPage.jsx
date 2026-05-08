@@ -186,7 +186,7 @@ function LoginPage() {
           }}
         >
           <div style={{ width: "100%", maxWidth: "420px" }}>
-            <p className="eyebrow mb-3">Sign In</p>
+            <span className="eyebrow mb-3">Sign In</span>
             <h1
               style={{
                 color: "var(--text-1)",

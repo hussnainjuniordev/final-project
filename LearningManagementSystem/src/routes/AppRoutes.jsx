@@ -1,5 +1,6 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout.jsx';
+import DashboardLayout from '../layouts/DashboardLayout.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 
 // Public pages
@@ -9,14 +10,14 @@ import CourseDetailPage from '../pages/public/CourseDetailPage.jsx';
 import AboutPage from '../pages/public/AboutPage.jsx';
 import NotFoundPage from '../pages/public/NotFoundPage.jsx';
 
-// Auth pages (common for all users)
+// Auth pages
 import LoginPage from '../pages/auth/LoginPage.jsx';
 import RegisterPage from '../pages/auth/RegisterPage.jsx';
 
 // Student pages
 import MyCoursesPage from '../pages/student/MyCoursesPage.jsx';
 
-// Shared pages (any authenticated user)
+// Shared pages
 import ProfilePage from '../pages/shared/ProfilePage.jsx';
 
 // Instructor pages
@@ -32,50 +33,58 @@ import AdminCoursesPage from '../pages/admin/AdminCoursesPage.jsx';
 import AnalyticsPage from '../pages/admin/AnalyticsPage.jsx';
 
 function AppRoutes() {
+  const location = useLocation();
+
   return (
-    <Routes>
+    <Routes location={location} key={location.pathname}>
+
+      {/* ── Public layout (top navbar only) ── */}
       <Route element={<MainLayout />}>
-        {/* Public routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/courses/:id" element={<CourseDetailPage />} />
         <Route path="/home" element={<Navigate to="/" replace />} />
 
-        {/* Guest-only routes — redirect if already logged in */}
+        {/* Guest-only */}
         <Route element={<ProtectedRoute guestOnly />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Route>
-
-        {/* Student routes */}
-        <Route element={<ProtectedRoute allowedRoles={['student']} />}>
-          <Route path="/dashboard/my-courses" element={<MyCoursesPage />} />
-        </Route>
-
-        {/* Shared authenticated routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard/profile" element={<ProfilePage />} />
-        </Route>
-
-        {/* Instructor routes */}
-        <Route element={<ProtectedRoute allowedRoles={['instructor']} />}>
-          <Route path="/dashboard/instructor/courses" element={<InstructorCoursesPage />} />
-          <Route path="/dashboard/instructor/courses/new" element={<CreateCoursePage />} />
-          <Route path="/dashboard/instructor/courses/:id/edit" element={<EditCoursePage />} />
-          <Route path="/dashboard/instructor/courses/:id/lessons" element={<InstructorCourseLessonsPage />} />
-          <Route path="/dashboard/instructor/lessons/upload" element={<UploadLessonPage />} />
-        </Route>
-
-        {/* Admin routes */}
-        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-          <Route path="/dashboard/admin/users" element={<ManageUsersPage />} />
-          <Route path="/dashboard/admin/courses" element={<AdminCoursesPage />} />
-          <Route path="/dashboard/admin/analytics" element={<AnalyticsPage />} />
-        </Route>
-
-        <Route path="*" element={<NotFoundPage />} />
       </Route>
+
+      {/* ── Dashboard layout (sidebar + topbar) ── */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+
+          {/* Shared */}
+          <Route path="/dashboard/profile" element={<ProfilePage />} />
+
+          {/* Student */}
+          <Route element={<ProtectedRoute allowedRoles={['student']} />}>
+            <Route path="/dashboard/my-courses" element={<MyCoursesPage />} />
+          </Route>
+
+          {/* Instructor */}
+          <Route element={<ProtectedRoute allowedRoles={['instructor']} />}>
+            <Route path="/dashboard/instructor/courses" element={<InstructorCoursesPage />} />
+            <Route path="/dashboard/instructor/courses/new" element={<CreateCoursePage />} />
+            <Route path="/dashboard/instructor/courses/:id/edit" element={<EditCoursePage />} />
+            <Route path="/dashboard/instructor/courses/:id/lessons" element={<InstructorCourseLessonsPage />} />
+            <Route path="/dashboard/instructor/lessons/upload" element={<UploadLessonPage />} />
+          </Route>
+
+          {/* Admin */}
+          <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+            <Route path="/dashboard/admin/users" element={<ManageUsersPage />} />
+            <Route path="/dashboard/admin/courses" element={<AdminCoursesPage />} />
+            <Route path="/dashboard/admin/analytics" element={<AnalyticsPage />} />
+          </Route>
+
+        </Route>
+      </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
