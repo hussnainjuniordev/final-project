@@ -74,7 +74,7 @@ function CoursesPage() {
       </div>
 
       <Row className="g-3 mb-4">
-        <Col md={6}>
+        <Col xs={12} md={6}>
           <Form.Control
             type="text"
             placeholder="Search courses..."
@@ -82,7 +82,7 @@ function CoursesPage() {
             onChange={handleSearch}
           />
         </Col>
-        <Col md={4}>
+        <Col xs={12} md={4}>
           <Form.Control
             type="text"
             placeholder="Filter by category..."
@@ -102,7 +102,7 @@ function CoursesPage() {
       ) : (
         <Row className="g-4">
           {courses.map((course) => (
-            <Col key={course._id} md={4}>
+            <Col key={course._id} xs={12} md={4}>
               <CourseCard
                 course={course}
                 isEnrolled={enrolledIds.includes(course._id)}

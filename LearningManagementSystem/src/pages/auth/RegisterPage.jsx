@@ -28,27 +28,15 @@ function RegisterPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await authService.register({
-        name,
-        email,
-        password,
-        role,
-      });
+      const response = await authService.register({ name, email, password, role });
       login(response.data);
-      toast.success("Account created successfully! Redirecting...", {
-        autoClose: 2000,
-      });
       const userRole = response.data.user?.role;
-      setTimeout(() => {
-        if (userRole === "instructor")
-          navigate("/dashboard/instructor/courses");
-        else if (userRole === "admin") navigate("/dashboard/admin/users");
-        else navigate("/dashboard/my-courses");
-      }, 1500);
+      if (userRole === "instructor") navigate("/dashboard/instructor/courses", { replace: true });
+      else if (userRole === "admin") navigate("/dashboard/admin/users", { replace: true });
+      else navigate("/dashboard/my-courses", { replace: true });
+      toast.success("Account created successfully!");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Registration failed", {
-        autoClose: 4000,
-      });
+      toast.error(err.response?.data?.message || "Registration failed", { autoClose: 4000 });
     } finally {
       setLoading(false);
     }
@@ -294,9 +282,9 @@ function RegisterPage() {
                       }}
                     >
                       <div
-                        style={{ fontSize: "1.4rem", marginBottom: "0.3rem" }}
+                        style={{ marginBottom: "0.3rem", display: "flex", justifyContent: "center" }}
                       >
-                        {r.icon}
+                        <r.icon size={22} style={{ color: role === r.value ? "#c4b5fd" : "var(--text-2)" }} />
                       </div>
                       <div
                         style={{

@@ -109,7 +109,7 @@ function HomePage() {
           <>
             <Row className="g-4 mb-4">
               {courses.map((course) => (
-                <Col key={course._id} md={4}>
+                <Col key={course._id} xs={12} md={4}>
                   <CourseCard course={course} />
                 </Col>
               ))}

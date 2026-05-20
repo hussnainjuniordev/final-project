@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GraduationCap, Check } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
@@ -13,6 +13,8 @@ function LoginPage() {
 
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,17 +22,13 @@ function LoginPage() {
     try {
       const response = await authService.login({ email, password });
       login(response.data);
-      toast.success("Login successful! Redirecting...", { autoClose: 2000 });
       const role = response.data.user?.role;
-      setTimeout(() => {
-        if (role === "instructor") navigate("/dashboard/instructor/courses");
-        else if (role === "admin") navigate("/dashboard/admin/users");
-        else navigate("/dashboard/my-courses");
-      }, 1500);
+      if (role === "instructor") navigate("/dashboard/instructor/courses", { replace: true });
+      else if (role === "admin") navigate("/dashboard/admin/users", { replace: true });
+      else navigate(from || "/dashboard/my-courses", { replace: true });
+      toast.success("Login successful!");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Login failed", {
-        autoClose: 4000,
-      });
+      toast.error(err.response?.data?.message || "Login failed", { autoClose: 4000 });
     } finally {
       setLoading(false);
     }

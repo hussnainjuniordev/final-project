@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Badge, Button, Col, Container, Row, Spinner } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BookOpen, Check, Play, Trash2, Inbox, Lock } from "lucide-react";
 import VideoPlayer from "../../components/VideoPlayer.jsx";
@@ -12,6 +12,7 @@ import * as lessonService from "../../services/lessonService.js";
 function CourseDetailPage() {
   const { id } = useParams();
   const { role } = useAuth();
+  const location = useLocation();
 
   const [course, setCourse] = useState(null);
   const [lessons, setLessons] = useState([]);
@@ -630,6 +631,45 @@ function CourseDetailPage() {
               <p style={{ color: "var(--text-2)", margin: 0 }}>
                 No lessons available yet.
               </p>
+            </div>
+          )}
+
+          {/* Unauthenticated CTA */}
+          {!role && (
+            <div
+              style={{
+                background: "var(--surface-1)",
+                border: "1px solid var(--border-brand)",
+                borderRadius: "var(--radius)",
+                padding: "3rem",
+                textAlign: "center",
+                marginTop: "1rem",
+              }}
+            >
+              <Lock size={36} style={{ color: "var(--brand)", marginBottom: "1rem" }} />
+              <h3 style={{ color: "var(--text-1)", fontWeight: 700, marginBottom: "0.5rem" }}>
+                Sign in to access this course
+              </h3>
+              <p style={{ color: "var(--text-2)", marginBottom: "1.5rem", maxWidth: 380, margin: "0 auto 1.5rem" }}>
+                Create a free account or log in to enroll and start watching lessons.
+              </p>
+              <div className="d-flex gap-3 justify-content-center flex-wrap">
+                <Button
+                  as={Link}
+                  to="/login"
+                  state={{ from: location }}
+                  variant="light"
+                >
+                  Log In
+                </Button>
+                <Button
+                  as={Link}
+                  to="/register"
+                  variant="outline-light"
+                >
+                  Create Free Account
+                </Button>
+              </div>
             </div>
           )}
 
