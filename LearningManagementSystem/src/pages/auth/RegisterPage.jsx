@@ -200,7 +200,7 @@ function RegisterPage() {
           }}
         >
           <div style={{ width: "100%", maxWidth: "440px" }}>
-            <p className="eyebrow mb-3">Get Started</p>
+            <span className="eyebrow mb-3">Get Started</span>
             <h1
               style={{
                 color: "var(--text-1)",

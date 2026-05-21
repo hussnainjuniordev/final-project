@@ -29,7 +29,7 @@ function MyCoursesPage() {
   return (
     <Container className="page-section py-5">
       <div className="section-heading mb-4">
-        <p className="eyebrow mb-2">My Learning</p>
+        <span className="eyebrow mb-2">My Learning</span>
         <h1 className="h2 fw-bold text-white mb-0">My Courses</h1>
       </div>
 

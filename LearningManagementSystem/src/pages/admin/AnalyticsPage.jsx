@@ -124,7 +124,7 @@ function AnalyticsPage() {
     <Container className="page-section py-5">
       {/* Header */}
       <div className="section-heading mb-4">
-        <p className="eyebrow mb-1">Admin Panel</p>
+        <span className="eyebrow mb-1">Admin Panel</span>
         <h1 className="h2 fw-bold mb-0" style={{ color: "var(--text-1)" }}>
           Analytics
         </h1>
@@ -194,7 +194,7 @@ function AnalyticsPage() {
 
           {/* ── Table ── */}
           <div className="section-heading mb-3">
-            <p className="eyebrow mb-1">Breakdown</p>
+            <span className="eyebrow mb-1">Breakdown</span>
             <h2 className="h4 fw-bold mb-0" style={{ color: "var(--text-1)" }}>
               Course Overview Table
             </h2>

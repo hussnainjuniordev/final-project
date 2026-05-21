@@ -41,7 +41,7 @@ function AboutPage() {
         {/* Hero */}
         <Row className="py-5">
           <Col lg={8}>
-            <p className="eyebrow mb-3">About Us</p>
+            <span className="eyebrow mb-3">About Us</span>
             <h1 className="display-5 fw-bold text-white mb-3">
               A Modern Learning Management System
             </h1>
@@ -58,7 +58,7 @@ function AboutPage() {
         <Row className="py-4">
           <Col>
             <div className="section-heading mb-4">
-              <p className="eyebrow mb-2">Features</p>
+              <span className="eyebrow mb-2">Features</span>
               <h2 className="h3 fw-bold text-white mb-0">
                 Why use this platform?
               </h2>
@@ -89,7 +89,7 @@ function AboutPage() {
         <Row className="py-4">
           <Col lg={8}>
             <div className="section-heading mb-4">
-              <p className="eyebrow mb-2">Tech Stack</p>
+              <span className="eyebrow mb-2">Tech Stack</span>
               <h2 className="h3 fw-bold text-white mb-0">
                 Built with the MERN Stack
               </h2>
@@ -127,7 +127,7 @@ function AboutPage() {
         <Row className="py-4 pb-5">
           <Col>
             <div className="section-heading mb-4">
-              <p className="eyebrow mb-2">Roles</p>
+              <span className="eyebrow mb-2">Roles</span>
               <h2 className="h3 fw-bold text-white mb-0">
                 Who uses this platform?
               </h2>
