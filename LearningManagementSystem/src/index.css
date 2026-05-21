@@ -1155,6 +1155,7 @@ hr {
 @media (max-width: 480px) {
   .hero-section { padding: 1.75rem 1rem; }
   .hero-badge   { font-size: 0.65rem; }
+}
 
 /* General responsive text and spacing */
 :root {
