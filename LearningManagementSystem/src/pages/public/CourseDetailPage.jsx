@@ -242,13 +242,16 @@ function CourseDetailPage() {
 
               {/* Sign in CTA for unauthenticated users */}
               {!role && (
-                <div style={{ display: "flex", gap: "0.5rem", flexShrink: 0 }}>
-                  <Button as={Link} to="/login" state={{ from: location }} variant="light" style={{ whiteSpace: "nowrap" }}>
-                    Log In
-                  </Button>
-                  <Button as={Link} to="/register" variant="outline-light" style={{ whiteSpace: "nowrap" }}>
-                    Sign Up Free
-                  </Button>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}>
+                  <p style={{ color: "var(--text-2)", fontSize: "0.85rem", margin: 0 }}>Sign in to access this course</p>
+                  <div style={{ display: "flex", gap: "0.5rem" }}>
+                    <Button as={Link} to="/login" state={{ from: location }} variant="light" style={{ whiteSpace: "nowrap" }}>
+                      Log In
+                    </Button>
+                    <Button as={Link} to="/register" variant="outline-light" style={{ whiteSpace: "nowrap" }}>
+                      Sign Up Free
+                    </Button>
+                  </div>
                 </div>
               )}
 
