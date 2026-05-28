@@ -153,7 +153,7 @@ function CourseDetailPage() {
   };
 
   /* ── derived ── */
-  const canAccessLessons = isEnrolled || role !== "student";
+  const canAccessLessons = role && (isEnrolled || role !== "student");
   const watchedCount = watchedIds.length;
   const progressPct =
     lessons.length > 0 ? Math.round((watchedCount / lessons.length) * 100) : 0;
@@ -638,6 +638,63 @@ function CourseDetailPage() {
               <p style={{ color: "var(--text-2)", margin: 0 }}>
                 No lessons available yet.
               </p>
+            </div>
+          )}
+
+          {/* Lesson list preview for unauthenticated users */}
+          {!role && lessons.length > 0 && (
+            <div
+              style={{
+                background: "var(--surface-1)",
+                border: "1px solid var(--border-1)",
+                borderRadius: "var(--radius)",
+                overflow: "hidden",
+                marginBottom: "1rem",
+              }}
+            >
+              <div
+                style={{
+                  padding: "1rem 1.25rem",
+                  borderBottom: "1px solid var(--border-1)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span style={{ color: "var(--text-1)", fontWeight: 600, fontSize: "0.9rem" }}>
+                  Course Content
+                </span>
+                <span style={{ color: "var(--text-3)", fontSize: "0.78rem" }}>
+                  {lessons.length} lesson{lessons.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+              {lessons.map((lesson, idx) => (
+                <div
+                  key={lesson._id}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    padding: "0.85rem 1.25rem",
+                    borderBottom: "1px solid var(--border-1)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 32, height: 32, borderRadius: "50%", flexShrink: 0,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: "0.78rem", fontWeight: 700,
+                      background: "var(--surface-3)", color: "var(--text-3)",
+                    }}
+                  >
+                    {idx + 1}
+                  </div>
+                  <div style={{ flex: 1, color: "var(--text-2)", fontSize: "0.875rem" }}>
+                    {lesson.title}
+                  </div>
+                  <Lock size={14} style={{ color: "var(--text-3)", flexShrink: 0 }} />
+                </div>
+              ))}
             </div>
           )}
 
