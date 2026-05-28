@@ -240,6 +240,18 @@ function CourseDetailPage() {
                 </div>
               </div>
 
+              {/* Sign in CTA for unauthenticated users */}
+              {!role && (
+                <div style={{ display: "flex", gap: "0.5rem", flexShrink: 0 }}>
+                  <Button as={Link} to="/login" state={{ from: location }} variant="light" style={{ whiteSpace: "nowrap" }}>
+                    Log In
+                  </Button>
+                  <Button as={Link} to="/register" variant="outline-light" style={{ whiteSpace: "nowrap" }}>
+                    Sign Up Free
+                  </Button>
+                </div>
+              )}
+
               {/* Enroll button */}
               {role === "student" && !isEnrolled && (
                 <Button
@@ -698,44 +710,8 @@ function CourseDetailPage() {
             </div>
           )}
 
-          {/* Unauthenticated CTA */}
-          {!role && (
-            <div
-              style={{
-                background: "var(--surface-1)",
-                border: "1px solid var(--border-brand)",
-                borderRadius: "var(--radius)",
-                padding: "3rem",
-                textAlign: "center",
-                marginTop: "1rem",
-              }}
-            >
-              <Lock size={36} style={{ color: "var(--brand)", marginBottom: "1rem" }} />
-              <h3 style={{ color: "var(--text-1)", fontWeight: 700, marginBottom: "0.5rem" }}>
-                Sign in to access this course
-              </h3>
-              <p style={{ color: "var(--text-2)", marginBottom: "1.5rem", maxWidth: 380, margin: "0 auto 1.5rem" }}>
-                Create a free account or log in to enroll and start watching lessons.
-              </p>
-              <div className="d-flex gap-3 justify-content-center flex-wrap">
-                <Button
-                  as={Link}
-                  to="/login"
-                  state={{ from: location }}
-                  variant="light"
-                >
-                  Log In
-                </Button>
-                <Button
-                  as={Link}
-                  to="/register"
-                  variant="outline-light"
-                >
-                  Create Free Account
-                </Button>
-              </div>
-            </div>
-          )}
+
+
 
           {/* Not enrolled CTA */}
           {role === "student" && !isEnrolled && (
