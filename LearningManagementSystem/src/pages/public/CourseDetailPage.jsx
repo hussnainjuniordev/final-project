@@ -693,24 +693,7 @@ function CourseDetailPage() {
             </div>
           )}
 
-          {/* Unauthenticated CTA */}
-          {role === null && (
-            <div style={{ background: "var(--surface-1)", border: "1px solid var(--border-1)", borderRadius: "var(--radius)", padding: "3rem", textAlign: "center", marginTop: "1rem" }}>
-              <Lock size={32} style={{ margin: "0 auto 1rem", color: "var(--text-3)" }} />
-              <p style={{ color: "var(--text-2)", marginBottom: "0.5rem" }}>
-                Create a free account to enroll and watch all lessons.
-              </p>
-              {lessons.length > 0 && (
-                <p style={{ color: "var(--text-3)", fontSize: "0.85rem", marginBottom: "1.5rem" }}>
-                  {lessons.length} lesson{lessons.length !== 1 ? "s" : ""} available
-                </p>
-              )}
-              <div className="d-flex gap-3 justify-content-center flex-wrap">
-                <Button as="a" href="/register" variant="light">Get Started Free</Button>
-                <Button as="a" href="/login" variant="outline-light">Sign In</Button>
-              </div>
-            </div>
-          )}
+
         </>
       )}
     </Container>
