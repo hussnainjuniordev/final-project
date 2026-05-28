@@ -21,4 +21,17 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-module.exports = { verifyToken };
+const optionalAuth = (req, _res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    try {
+      const decoded = jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET);
+      req.user = { id: decoded.id, role: decoded.role };
+    } catch {
+      // invalid token — treat as unauthenticated
+    }
+  }
+  next();
+};
+
+module.exports = { verifyToken, optionalAuth };

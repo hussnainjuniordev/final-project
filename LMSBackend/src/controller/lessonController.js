@@ -38,6 +38,12 @@ const getLessonsByCourse = async (req, res) => {
     }
 
     const lessons = await Lesson.find({ courseId: req.params.courseId }).sort({ createdAt: 1 });
+
+    // Unauthenticated users only get titles, not video URLs
+    if (!req.user) {
+      return res.status(200).json(lessons.map(l => ({ _id: l._id, title: l.title })));
+    }
+
     return res.status(200).json(lessons);
   } catch (err) {
     return res.status(500).json({ message: 'Server error', error: err.message });
